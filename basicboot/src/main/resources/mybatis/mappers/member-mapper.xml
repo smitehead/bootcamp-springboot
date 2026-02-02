@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<insert id="insertMember" parameterType="member"> INSERT INTO MEMBER
+		VALUES(#{userId},#{password},#{userName},
+		#{gender},#{age},#{email},#{phone},#{address}, #{hobby},sysdate)
+	</insert>
+	<resultMap id="memberMap" type="member">
+		<result column="hobby" property="hobby" />
+	</resultMap>
+	<select id="selectMemberById" parameterType="string"
+		resultMap="memberMap"> SELECT * FROM MEMBER WHERE USERID=#{userId} </select>
+		
+		<select id="selectMemberAll"
+		resultMap="memberMap"> SELECT * FROM MEMBER</select>
+</mapper>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
