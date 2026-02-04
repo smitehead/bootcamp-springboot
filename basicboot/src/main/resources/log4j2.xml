@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<!-- 출력할 방식 -->
+		<Console name="console">
+			<PatternLayout
+				pattern="[%-5p] %d{yyyy-MM-dd HH:mm:ss} : %l - %m%n" />
+		</Console>
+		<RollingFile name="rollingFile"
+			fileName="C:\\Users\\knuser\\logs\\boot-log.log"
+			filePattern="C:\\Users\\knuser\\logs\\log-%d{yyyy-MM-dd}.log">
+			<PatternLayout
+				pattern="[%-5p] %d{yyyy-MM-dd HH:mm:ss} : %l - %m%n" />
+			<!-- <JsonTemplateLayout eventTemplateUri="classpath:mylayout.json"/> -->
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="24" />
+				<SizeBasedTriggeringPolicy size="100MB" />
+			</Policies>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Logger name="com.bs.boot" level="DEBUG">
+			<AppenderRef ref="rollingFile" />
+		</Logger>
+		<!-- 출력대상을 설정 -->
+		<Logger name="org.springframework.context" level="INFO" />
+		<Logger name="org.springframework.core" level="INFO" />
+		<Logger name="org.springframework.web" level="INFO" />
+		<Logger name="org.springframework.bean" level="INFO" />
+		<Root level="WARN">
+			<AppenderRef ref="console" />
+		</Root>
+	</Loggers>
+</Configuration>
+
+
+
+

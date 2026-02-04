@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+	</head>
+	<body>
+		<h1>html페이지</h1>
+		<button id="btnAll">demo전체 조회하기</button>
+		<input id="devNo" type="text"><button id="searchBtn">번호로 조회</button>
+		<div id="demo-container" class="card">
+			<h2>DEMO저장하기</h2>
+			<div class="form-group row">
+				<label for="devName" class="col-sm-2 col-form-label">이름</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="devName" name="devName">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="devAge" class="col-sm-2 col-form-label">나이</label>
+				<div class="col-sm-10">
+					<input type="number" class="form-control" id="devAge" name="devAge">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="devEmail" class="col-sm-2 col-form-label">이메일</label>
+				<div class="col-sm-10">
+					<input type="email" class="form-control" id="devEmail" name="devEmail">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">성별</label>
+				<div class="col-sm-10">
+					<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="devGender" id="devGender0" value="M">
+					<label class="form-check-label" for="devGender0">남</label>
+					</div>
+					<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="devGender" id="devGender1" value="F">
+					<label class="form-check-label" for="devGender1">여</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">개발언어</label>
+				<div class="col-sm-10">
+					<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" name="devLang" id="devLang0" value="Java">
+					<label class="form-check-label" for="devLang0">Java</label>
+					</div>
+					<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" name="devLang" id="devLang1" value="C">
+					<label class="form-check-label" for="devLang1">C</label>
+					</div>
+					<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" name="devLang" id="devLang2" value="Javascript">
+					<label class="form-check-label" for="devLang2">Javascript</label>
+					</div>
+				</div>
+			</div>
+			<button id="savebtn">저장</button>
+		</div>
+		<div id="container"></div>      
+		<script>
+			savebtn.addEventListener("click",async e=>{
+				 const demo={};
+				 const lang=[];
+				 document.querySelectorAll("#demo-container input").forEach(e=>{
+					 if (e.type=='radio'){
+						 if(e.checked) demo[e.name]=e.value;
+					 }
+					 else if(e.type=='checkbox'){
+						 if(e.checked) lang.push(e.value);
+					 }else{
+						 demo[e.name]=e.value;
+					 }
+				 });
+				demo['devLang']=lang;
+				//console.log(demo);
+				const response=await fetch("/demos",{
+					method:"post",
+					headers:{
+						"Content-Type":"application/json",
+					},body:JSON.stringify(demo)
+				});
+				if(response.ok){
+					const data=await response.json();
+					console.log(data);
+				}
+			});
+			searchBtn.addEventListener("click",async e=>{
+				const no=document.getElementById("devNo").value;
+				const response=await fetch(`/demos/${no}`);
+				if(response.ok){
+					const data=await response.json();
+					console.log(data);
+				}
+			});
+			document.getElementById("btnAll").addEventListener("click",
+					async e=>{
+						const response=await fetch("/demos");
+						if(response.ok){
+							const data=await response.json();
+							const $table=document.createElement("table");
+							const $header=Object.keys(data[0]).reduce(($tr,value)=>{
+								const $th=document.createElement("th");
+								$th.innerText=value;
+								$tr.appendChild($th);
+								return $tr;
+							},document.createElement("tr"));
+							$table.appendChild($header);
+							data.forEach(e=>{
+								const $tr=Object.values(e).reduce(($tr,value)=>{
+									const $th=document.createElement("td");
+									$th.innerText=value;
+									$tr.appendChild($th);
+									return $tr;
+								},document.createElement("tr"));
+								$table.appendChild($tr);
+							});
+							document.getElementById("container").innerHTML="";
+							document.getElementById("container").appendChild($table);
+						}else{
+							alert(`서버요청실패 관리자에게 문의하세요! 코드 : ${response.status}`);
+						}
+			})
+		</script>
+	</body>
+</html>

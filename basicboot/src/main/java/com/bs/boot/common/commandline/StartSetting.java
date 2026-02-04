@@ -3,6 +3,7 @@ package com.bs.boot.common.commandline;
 import java.util.Arrays;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
@@ -10,6 +11,7 @@ import org.springframework.web.context.WebApplicationContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Order(1)
 @Component
 @RequiredArgsConstructor
 @Slf4j

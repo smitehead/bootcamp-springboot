@@ -3,12 +3,14 @@ package com.bs.boot.common.commandline;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.bs.boot.member.service.MemberService;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
+@Order(3)
 @Configuration
 public class CommonConfig {
 	@Bean
