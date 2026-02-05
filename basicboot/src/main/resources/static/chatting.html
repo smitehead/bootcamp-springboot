@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>채팅화면</title>
+<script>
+	const userId=prompt("사용할 이름 ");
+</script>
+<script src="/js/chatting.js"></script>
+</head>
+<body>
+	<h2>채팅!!</h2>
+	<input type="text" id="msg"><button id="sendBtn">전송</button>
+	<div id="chat-container"></div>
+	<script>
+		sendBtn.addEventListener("click",e=>{
+			const msgData=msg.value;
+			server.send(msgData);
+		})
+	</script>
+</body>
+</html>

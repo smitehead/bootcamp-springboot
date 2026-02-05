@@ -71,8 +71,26 @@
 			</div>
 			<button id="savebtn">저장</button>
 		</div>
+		
+		<input type="file" id="upfile" multiple><button id="uploadBtn">업로드</button>
+		<button class="btn btn-outline-primary" id="chattingBtn">채팅하기</button>
 		<div id="container"></div>      
 		<script>
+			chattingBtn.addEventListener("click",e=>{
+				open("/chatting.html","_blank","width=400,height=800");
+			});
+			uploadBtn.addEventListener("click",async e=>{
+				const formData=new FormData();
+				const uploadFile=upfile.files;
+				for(const file of upfile.files){
+					formData.append("upfile",file);				
+				}
+				const response=await fetch("/api/members/upload",{
+					method:"post",
+					body:formData
+				});
+				
+			});
 			savebtn.addEventListener("click",async e=>{
 				 const demo={};
 				 const lang=[];

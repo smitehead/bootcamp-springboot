@@ -36,4 +36,5 @@ public class MemberDTO {
 				.enrollDate(enrollDate)
 				.build();
 	}
+	
 }
