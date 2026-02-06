@@ -4,10 +4,33 @@
 <head>
 <meta charset="UTF-8">
 <title>채팅화면</title>
+
 <script>
 	const userId=prompt("사용할 이름 ");
 </script>
 <script src="/js/chatting.js"></script>
+<style>
+	#chat-container{
+		height:400px;
+		overflow-y:scroll;
+		border: 1px dotted yellow;
+	}
+	.msgcontainer {
+		display:flex
+	}
+	.left{
+		justify-content:start;
+	}
+	.right{
+		justify-content:end;
+	}
+	.alertContainer{
+		border: 2px solid lime;
+		display:flex;
+		justify-content:center
+	}
+	
+</style>
 </head>
 <body>
 	<h2>채팅!!</h2>
@@ -16,7 +39,7 @@
 	<script>
 		sendBtn.addEventListener("click",e=>{
 			const msgData=msg.value;
-			server.send(msgData);
+			server.send(new Message("msg",userId,"",msgData,"").convert());
 		})
 	</script>
 </body>

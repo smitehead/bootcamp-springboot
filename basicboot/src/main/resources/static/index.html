@@ -74,8 +74,50 @@
 		
 		<input type="file" id="upfile" multiple><button id="uploadBtn">업로드</button>
 		<button class="btn btn-outline-primary" id="chattingBtn">채팅하기</button>
-		<div id="container"></div>      
+		<div id="container"></div>  
+		<div class="modal-content">
+		<div class="modal-header">
+		<h5 class="modal-title" id="loginModalLabel">로그인</h5>
+			</div>
+			<form action="${pageContext.request.contextPath }/loginend.do" method="post">
+				<input type="hidden" name="${_csrf.parameterName }" 
+				value="${_csrf.token}">
+				<div class="modal-body">
+					<input type="text" name="userId" class="form-control"
+					placeholder="아이디입력" required><br/>
+					<input type="password" name="password" class="form-control"
+					placeholder="패스워드입력" required>											
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="loginBtn" class="btn btn-outline-success">로그인</button>
+					<button type="button" class="btn btn-outline-success"
+					data-dismiss="modal">취소</button>
+				</div>
+			</form>
+		</div>    
 		<script>
+			loginBtn.addEventListener("click",async (e)=>{
+				const inputs=document.querySelectorAll('.modal-body input');
+				const body={};
+				inputs.forEach(input=>{
+					body[input.name]=input.value;
+				});
+				const response=await fetch("/auth/login",{
+					method:"post",
+					headers:{
+						"Content-Type":"application/json",
+					},
+					body:JSON.stringify(body)
+				});
+				if(response.ok){
+					const data=await response.json();
+					//가져온 인증정보는 SessionStorage에 저장한다.
+					sessionStorage.setItem("token",data.token);
+				}else{
+					alert("로그인 실패!");
+				}
+			})
+		
 			chattingBtn.addEventListener("click",e=>{
 				open("/chatting.html","_blank","width=400,height=800");
 			});
@@ -127,7 +169,11 @@
 			});
 			document.getElementById("btnAll").addEventListener("click",
 					async e=>{
-						const response=await fetch("/demos");
+						const response=await fetch("/demos",{
+							headers:{
+								"Authorization":sessionStorage.getItem("token")
+							}
+						});
 						if(response.ok){
 							const data=await response.json();
 							const $table=document.createElement("table");

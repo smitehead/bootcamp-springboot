@@ -10,4 +10,6 @@ public interface MemberService {
 	int insertMember(MemberDTO m);
 	void updateMember(MemberDTO m);	
 	void deleteMember(String id);
+	
+	String loginToken(MemberDTO m);
 }
